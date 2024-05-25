@@ -1,0 +1,38 @@
+import numpy as np
+from PIL import Image
+
+def pixel_to_ascii(pixel_value):
+    ascii_chars = ["@", "#", "S", "%", "?", "*", "+", ";", ":", ",", "."]
+    normalized_value = pixel_value / 255.0
+    char_index = int(normalized_value * (len(ascii_chars) - 1))
+    return ascii_chars[char_index]
+
+
+def image_to_ascii(image_path, output_width):
+    img = Image.open("C:\\Users\\joyal\\Downloads\\Spider-Man_PS4_E3_2017_Hero.jpg").convert("L")
+    width, height = img.size
+    aspect_ratio = height / width
+    output_height = int(output_width * aspect_ratio * 0.55) 
+    img = img.resize((output_width, output_height))
+
+    pixel_data = np.array(img)
+
+    ascii_art = ""
+    for row in pixel_data:
+        for pixel in row:
+            ascii_art += pixel_to_ascii(pixel)
+        ascii_art += "\n"
+
+    return ascii_art
+
+
+
+image_path = "example_image.jpg" 
+output_width = 100 
+
+ascii_art = image_to_ascii(image_path, output_width)
+print(ascii_art)
+
+output_file_path = "ascii_art_output.txt"  
+with open("D:\\Misc Projects\\ImageToAscii\\GoodMorningBaby.txt", 'w') as f:
+    f.write(ascii_art)
